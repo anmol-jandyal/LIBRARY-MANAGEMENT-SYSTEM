@@ -131,7 +131,7 @@ input[type="text"] {
 #book-list-section {
 	width: 100%;
 	align-self: baseline;
-	overflow-x: auto;
+	overflow: auto;
 
 	max-width: 100svh;
 }
