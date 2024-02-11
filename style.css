@@ -6,8 +6,6 @@
 }
 
 body {
-	/* height: 100svh; */
-	/* height: clamp(100svh, 100svh, 200svh); */
 	min-height: 100svh;
 
 	background-color: #009a71;
@@ -34,7 +32,6 @@ main {
 	flex-direction: column;
 
 	gap: 30px;
-	/* padding: 0 10px; */
 }
 main .left {
 	background-color: #1e1f1e86;
@@ -93,9 +90,7 @@ section {
 	padding: 10px;
 	align-self: stretch;
 }
-/* #add-book-section {
-	padding: 40px;
-} */
+
 #add-book-section {
 	background-color: rgba(0, 0, 0, 0.55);
 }

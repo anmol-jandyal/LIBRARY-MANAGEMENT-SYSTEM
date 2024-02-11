@@ -251,12 +251,6 @@ function createEntry(sno, { id, title, author, borrowed }) {
 							<td class="status-val"> <button class="status-btn ${status}-btn" data-id="${id}"  >${status}</button></td>
 						</tr>`;
 
-	//BASED UPON THE STATUS WE WILL APPLY EVENT LISTENER TO THE BUTTON
-	// if (borrowed) {
-	// 	tableRow.querySelector(".Return-btn").addEventListener("click", returnBookBtnFn);
-	// } else {
-	// 	tableRow.querySelector(".Borrow-btn").addEventListener("click", borrowBookBtnFn);
-	// }
 	return tableRow;
 }
 
