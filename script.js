@@ -252,32 +252,33 @@ function createEntry(sno, { id, title, author, borrowed }) {
 						</tr>`;
 
 	//BASED UPON THE STATUS WE WILL APPLY EVENT LISTENER TO THE BUTTON
-	if (borrowed) {
-		tableRow.querySelector(".Return-btn").addEventListener("click", returnBookBtnFn);
-	} else {
-		tableRow.querySelector(".Borrow-btn").addEventListener("click", borrowBookBtnFn);
-	}
+	// if (borrowed) {
+	// 	tableRow.querySelector(".Return-btn").addEventListener("click", returnBookBtnFn);
+	// } else {
+	// 	tableRow.querySelector(".Borrow-btn").addEventListener("click", borrowBookBtnFn);
+	// }
 	return tableRow;
 }
 
-function returnBookBtnFn(e) {
-	e.target.removeEventListener("click", returnBookBtnFn);
-	e.target.classList.add("Borrow-btn");
-	e.target.classList.remove("Return-btn");
-	e.target.textContent = "Borrow";
-	e.target.addEventListener("click", borrowBookBtnFn);
+function returnBookBtnFn(target) {
+	target.classList.add("Borrow-btn");
+	target.classList.remove("Return-btn");
+	target.textContent = "Borrow";
 
-	LMS.returnBook(e.target.dataset.id);
+	LMS.returnBook(target.dataset.id);
 }
 
-function borrowBookBtnFn(e) {
-	e.target.removeEventListener("click", borrowBookBtnFn);
-	e.target.classList.remove("Borrow-btn");
-	e.target.classList.add("Return-btn");
-	e.target.textContent = "Return";
-	e.target.addEventListener("click", returnBookBtnFn);
+function borrowBookBtnFn(target) {
+	target.classList.remove("Borrow-btn");
+	target.classList.add("Return-btn");
+	target.textContent = "Return";
 
-	LMS.borrowBook(e.target.dataset.id);
+	LMS.borrowBook(target.dataset.id);
+}
+
+function returnBorrow(data) {
+	if (data.target.classList.contains("Borrow-btn")) borrowBookBtnFn(data.target);
+	else if (data.target.classList.contains("Return-btn")) returnBookBtnFn(data.target);
 }
 
 function showBookList() {
@@ -286,7 +287,10 @@ function showBookList() {
 	activeBtn(listBtnEle);
 
 	const list = LMS.bookList();
+
 	const tbody = document.querySelector("#book-list-section tbody");
+
+	tbody.addEventListener("click", returnBorrow);
 
 	for (let i = 0; i < list.length; i++) {
 		tbody.appendChild(createEntry(i + 1, list[i]));
