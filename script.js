@@ -87,6 +87,9 @@ const LMS = {
 		alert("Book not found");
 		return null;
 	},
+	serachBookWithPrefix(prefix) {
+		return this.library.filter((ele) => ele.title.toLowerCase().startsWith(prefix));
+	},
 };
 
 // ===============================
@@ -147,9 +150,10 @@ const sectionHtml = {
 				</section>`,
 
 	serachSection: `<section id="search-section">
-					<h1>SEARCH SECTION</h1>
+						<h1>SEARCH SECTION</h1>
+
 					<form action="">
-						<input type="text" id="search-bar" />
+						<input type="text" placeholder="SEARCH BY TITLE" id="search-bar" />
 						<button class="search-query-btn btn"  >Submit</button>
 					</form>
 					<div class="search-output-container"> </div>
@@ -163,7 +167,7 @@ const listBtnEle = document.querySelector(".list-btn");
 const searchBtnEle = document.querySelector(".search-btn");
 
 // function on click on each button
-function activeBtn(clickedBtn) {
+function activeTabBtn(clickedBtn) {
 	addBtnEle.classList.remove("active");
 	searchBtnEle.classList.remove("active");
 	listBtnEle.classList.remove("active");
@@ -190,6 +194,7 @@ function addBook(event) {
 
 	// checking for invalid input
 	if (!regExp.test(id)) {
+		alert("Book id can only be a numeric value");
 		idEle.style.border = "red 2px solid";
 		return;
 	} else {
@@ -224,7 +229,7 @@ function addBook(event) {
 function showAddSection() {
 	outputContainer.innerHTML = sectionHtml.addBookSection;
 
-	activeBtn(addBtnEle);
+	activeTabBtn(addBtnEle);
 
 	const addBookSection = outputContainer.querySelector("#add-book-section");
 	const submitBtn = addBookSection.querySelector("#submit-btn");
@@ -238,7 +243,7 @@ addBtnEle.addEventListener("click", showAddSection);
 //displaying books
 // const bookListSection = outputContainer.querySelector("#book-list-section");
 
-function createEntry(sno, { id, title, author, borrowed }) {
+function createEntry(sno, { id, title, author, isBorrowed: borrowed }) {
 	const tableRow = document.createElement("tr");
 
 	const status = borrowed ? "Return" : "Borrow";
@@ -278,7 +283,7 @@ function returnBorrow(data) {
 function showBookList() {
 	outputContainer.innerHTML = sectionHtml.bookListSection;
 
-	activeBtn(listBtnEle);
+	activeTabBtn(listBtnEle);
 
 	const list = LMS.bookList();
 
@@ -295,7 +300,7 @@ listBtnEle.addEventListener("click", showBookList);
 
 ///////////////////////////////////////////////////////
 // serach button functionality
-
+/* 
 function performSearch(e) {
 	e.preventDefault();
 
@@ -316,13 +321,38 @@ function performSearch(e) {
 		searchOutputContainer.appendChild(div);
 	}
 }
+ */
+
+function searchResults(e) {
+	const prefix = e.target.value.toLowerCase().trim();
+
+	if (!prefix) {
+		//if prefix is empty the no need to print the list
+		return;
+	}
+
+	const filteredBooks = LMS.serachBookWithPrefix(prefix);
+	const searchOutputContainer = outputContainer.querySelector("#search-section .search-output-container");
+	const div = document.createElement("div");
+
+	searchOutputContainer.innerHTML = "";
+	div.innerHTML = sectionHtml.table;
+
+	const tbody = div.querySelector("tbody");
+	console.log(tbody);
+
+	filteredBooks.forEach((book, index) => {
+		tbody.appendChild(createEntry(index, book));
+		searchOutputContainer.appendChild(div);
+	});
+}
+
 function showSearch() {
 	outputContainer.innerHTML = sectionHtml.serachSection;
 
-	activeBtn(searchBtnEle);
+	activeTabBtn(searchBtnEle);
 
-	const btn = outputContainer.querySelector(".search-query-btn");
-
-	btn.addEventListener("click", performSearch);
+	outputContainer.querySelector("#search-bar").addEventListener("input", searchResults);
 }
+
 searchBtnEle.addEventListener("click", showSearch);
