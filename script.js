@@ -1,3 +1,10 @@
+function updateLocalStorage() {
+	localStorage.setItem("LMSLibrary", JSON.stringify(LMS.library));
+}
+function retrieveLibrary() {
+	return JSON.parse(localStorage.getItem("LMSLibrary"));
+}
+
 // book object  // constructor construct to create objects of book
 
 function Book(id, title, author) {
@@ -9,7 +16,7 @@ function Book(id, title, author) {
 
 const LMS = {
 	// library array
-	library: [],
+	library: retrieveLibrary() ?? [], //retrieve() will return the array of books if present in localstorage
 
 	//checking if same book already registered or not
 	//isregistered will return null if book is not registerd in the system
@@ -31,6 +38,8 @@ const LMS = {
 
 			this.library.push(new Book(id, title, author));
 			alert(`Book with id- "${id}" title '${title}' author '${author}' has been added to the library `);
+
+			updateLocalStorage();
 		} else {
 			alert(`Book with id- "${id}" already registered with system`);
 		}
@@ -52,6 +61,7 @@ const LMS = {
 		} else {
 			book.isBorrowed = true;
 			alert(`Book with id - "${book.id}" has been borrowed`);
+			updateLocalStorage();
 		}
 	},
 
@@ -67,12 +77,14 @@ const LMS = {
 		book.isBorrowed = false;
 
 		alert(`Book id- "${id}" Returned`);
+
+		updateLocalStorage();
 	},
 
 	// available books
 	bookList: function () {
 		//passing separate copy of array ;
-		return structuredClone(this.library);
+		return [...this.library];
 	},
 
 	//searching for a book
