@@ -154,7 +154,7 @@ const sectionHtml = {
 
 					<form action="">
 						<input type="text" placeholder="SEARCH BY TITLE" id="search-bar" />
-						<button class="search-query-btn btn"  >Submit</button>
+						
 					</form>
 					<div class="search-output-container"> </div>
 				</section>`,
@@ -319,7 +319,6 @@ function performSearch(e) {
 		tbody.appendChild(createEntry(1, book));
 
 		searchOutputContainer.appendChild(div);
-        tbody.addEventListener("click", returnBorrow);
 	}
 }
  */
@@ -340,7 +339,8 @@ function searchResults(e) {
 	div.innerHTML = sectionHtml.table;
 
 	const tbody = div.querySelector("tbody");
-	console.log(tbody);
+
+	tbody.addEventListener("click", returnBorrow);
 
 	filteredBooks.forEach((book, index) => {
 		tbody.appendChild(createEntry(index, book));
