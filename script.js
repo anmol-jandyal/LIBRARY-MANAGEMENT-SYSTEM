@@ -319,6 +319,7 @@ function performSearch(e) {
 		tbody.appendChild(createEntry(1, book));
 
 		searchOutputContainer.appendChild(div);
+        tbody.addEventListener("click", returnBorrow);
 	}
 }
  */
